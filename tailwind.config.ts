@@ -161,6 +161,14 @@ export default {
 					'50%': {
 						transform: 'rotate(1deg)'
 					}
+				},
+				'blink': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0'
+					}
 				}
 			},
 			animation: {
@@ -172,7 +180,8 @@ export default {
 				'float': 'float 5s ease-in-out infinite',
 				'pulse-light': 'pulse-light 2s ease-in-out infinite',
 				'typewriter': 'typewriter 2s steps(30) forwards',
-				'tilt': 'tilt 5s ease-in-out infinite'
+				'tilt': 'tilt 5s ease-in-out infinite',
+				'blink': 'blink 0.8s step-end infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

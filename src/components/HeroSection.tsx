@@ -6,21 +6,42 @@ import { ChevronRight } from "lucide-react";
 
 const HeroSection: React.FC = () => {
   const [typedText, setTypedText] = useState("");
-  const fullText = "Transform Your Real Estate Experience";
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [typingSpeed, setTypingSpeed] = useState(80);
+  
+  const phrases = [
+    "Transform Your Real Estate Experience",
+    "Find Your Dream Property Today",
+    "Luxury Living Made Simple"
+  ];
   
   useEffect(() => {
-    let index = 0;
-    const typingEffect = setInterval(() => {
-      if (index < fullText.length) {
-        setTypedText((prev) => prev + fullText.charAt(index));
-        index++;
-      } else {
-        clearInterval(typingEffect);
+    const handleTyping = () => {
+      const currentIndex = loopNum % phrases.length;
+      const fullText = phrases[currentIndex];
+      
+      setTypedText(isDeleting 
+        ? fullText.substring(0, typedText.length - 1) 
+        : fullText.substring(0, typedText.length + 1)
+      );
+      
+      setTypingSpeed(isDeleting ? 50 : 80);
+      
+      if (!isDeleting && typedText === fullText) {
+        // Pause at the end of typing
+        setTimeout(() => setIsDeleting(true), 2000);
+      } else if (isDeleting && typedText === '') {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+        // Pause before starting to type the next phrase
+        setTypingSpeed(500);
       }
-    }, 80);
+    };
     
-    return () => clearInterval(typingEffect);
-  }, []);
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [typedText, isDeleting, loopNum, typingSpeed, phrases]);
 
   return (
     <div className="relative min-h-screen flex items-center overflow-hidden">
@@ -47,8 +68,8 @@ const HeroSection: React.FC = () => {
       {/* Content */}
       <div className="container mx-auto px-4 pt-20 z-10">
         <div className="max-w-4xl">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-serif text-shadow-lg">
-            {typedText}<span className="animate-pulse">|</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-serif text-shadow-lg min-h-[4rem] md:min-h-[5rem]">
+            {typedText}<span className="inline-block w-[0.1em] h-[1em] bg-white ml-1 animate-blink"></span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl animate-fade-in" style={{ animationDelay: '2s' }}>
